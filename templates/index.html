@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shift Cipher App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        text-align: center;
+      }
+      form {
+        margin-bottom: 20px;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .form-group input[type="text"],
+      .form-group input[type="number"],
+      .form-group input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .form-group button {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #007bff;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      .form-group button:hover {
+        background-color: #0056b3;
+      }
+      .result,
+      .error {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #e9ecef;
+      }
+      .error {
+        color: red;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Shift Cipher</h1>
+
+      <!-- Form gộp nhập văn bản, key và tải file -->
+      <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="text">Nhập văn bản (bỏ qua nếu tải file):</label>
+          <input
+            type="text"
+            id="text"
+            name="text"
+            value="{{ text }}"
+            placeholder="Nhập văn bản ở đây"
+          />
+        </div>
+        <div class="form-group">
+          <label for="key">Nhập key (0 đến 25):</label>
+          <input
+            type="number"
+            id="key"
+            name="key"
+            value="{{ key }}"
+            min="0"
+            max="25"
+            placeholder="Nhập key"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="file"
+            >Chọn file để mã hóa/giải mã (bỏ qua nếu nhập văn bản):</label
+          >
+          <input type="file" id="file" name="file" />
+        </div>
+        <div class="form-group">
+          <label for="action">Chọn hành động:</label>
+          <input
+            type="radio"
+            id="encrypt"
+            name="action"
+            value="encrypt"
+            required
+          />
+          <label for="encrypt">Mã hóa</label><br />
+          <input type="radio" id="decrypt" name="action" value="decrypt" />
+          <label for="decrypt">Giải mã</label>
+        </div>
+        <div class="form-group">
+          <button type="submit">Thực hiện</button>
+          <button type="button" onclick="clearFields()">Clear</button>
+        </div>
+      </form>
+
+      {% if error %}
+      <div class="error">
+        <p>{{ error }}</p>
+      </div>
+      {% endif %} {% if result %}
+      <div class="result">
+        <h2>Kết quả:</h2>
+
+        <div>
+          <strong>Kết quả:</strong>
+          <textarea readonly>{{ result }}</textarea>
+        </div>
+        {% if download_url %}
+        <a
+          href="{{ download_url }}"
+          class="form-group button"
+          download="cipher_result.txt"
+          >Lưu file kết quả</a
+        >
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <script>
+      function clearFields() {
+        // Xóa giá trị các trường văn bản, key và file
+        document.getElementById("text").value = "";
+        document.getElementById("key").value = "";
+        document.getElementById("file").value = "";
+        document.querySelector('input[name="action"]:checked').checked = false;
+      }
+    </script>
+  </body>
+</html>
